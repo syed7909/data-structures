@@ -1,0 +1,64 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+	int data;
+	node *down;
+};
+
+struct stack
+{
+private:
+	node *top, *t, *n;
+public:
+	stack()
+	{
+		top = t = NULL;
+	}
+
+	void push()
+	{
+		if (top == NULL)
+		{
+			top = new node;
+			cin >> top->data;
+			t = top;
+			top->down = NULL;
+		}
+		else
+		{
+			t = new node;
+			cin >> t->data;
+			t->down = top;
+			top = t;
+		}
+	}
+
+	void pop()
+	{
+	
+			cout << top->data;
+			top = top->down;
+		
+	}
+	void topg()
+	{
+		n = top;
+		cout<<n->data;
+
+	}
+};
+
+void main()
+{
+	stack s;
+	s.push();
+	s.push();
+	s.push();
+	s.push();
+	s.topg();
+	s.pop();
+
+	
+}

@@ -1,0 +1,374 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+	int data;
+	node *left;
+	node *right;
+};
+
+class imp
+{
+	node *root;
+	node *temp;
+	node *temp1;
+	node *n;
+
+	int d;
+public:
+	imp()
+	{
+		root = NULL;
+		temp = root;
+	}
+
+	node* insert(node *temp, int data)
+	{
+
+		if (root == NULL)
+		{
+
+			n = new node;
+			root = n;
+			root->data = data;
+			root->left = NULL;
+			root->right = NULL;
+			temp = root;
+			return root;
+		}
+
+		if (temp->data == data)
+		{
+			cout << "Dublicate: " << data << endl;
+			return temp;
+		}
+
+
+		if (temp->data > data)
+		{
+			if (temp->left == NULL)
+			{
+				temp->left = new node;
+				temp->left->data = data;
+				temp->left->left = NULL;
+				temp->left->right = NULL;
+				return temp;
+			}
+			else
+			{
+				return	insert(temp->left, data);
+			}
+		}
+		if (temp->data < data)
+		{
+			if (temp->right == NULL)
+			{
+				temp->right = new node;
+				temp->right->data = data;
+				temp->right->left = NULL;
+				temp->right->right = NULL;
+				return temp;
+			}
+			else
+			{
+				return	insert(temp->right, data);
+			}
+		}
+	}
+
+	void del(node *temp, int data)
+	{
+
+		if (root->data == data)
+		{
+			return;
+		}
+		if (temp->data > data)
+		{
+
+			if (temp->left != NULL)
+			{
+
+				if (temp->left->data == data && (temp->left->left == NULL) && (temp->left->right == NULL))
+				{
+					temp1 = temp->left;
+					temp->left = NULL;
+					delete temp1;
+					return;
+				}
+				if (temp->left->data == data && (temp->left->right == NULL) && (temp->left->left != NULL))
+				{
+					temp1 = temp->left;
+					temp->left = temp->left->left;
+					delete temp1;
+					return;
+				}
+				if (temp->left->data == data && (temp->left->right != NULL) && (temp->left->left == NULL))
+				{
+					temp->left = temp->left->right;
+					temp1 = temp->left;
+					delete temp1;
+					return;
+				}
+
+				if (temp->left->data == data && (temp->left->right != NULL) && (temp->left->left != NULL))
+				{
+					min_left(temp->left->left);
+					temp->left->data = d;
+					return;
+				}
+
+				else
+				{
+
+					return del(temp->left, data);
+				}
+			}
+			
+		}
+
+		if (temp->data < data)
+		{
+
+			if (temp->right != NULL)
+			{
+
+				if (temp->right->data == data && (temp->right->left == NULL) && (temp->right->right == NULL))
+				{
+					temp1 = temp->right;
+					temp->right = NULL;
+					delete temp1;
+					return;
+				}
+
+				if (temp->right->data == data && (temp->right->right == NULL) && (temp->right->left != NULL))
+				{
+					temp1 = temp->right;
+					delete temp1;
+					temp->right = temp->right->left;
+					return;
+				}
+				if (temp->right->data == data && (temp->right->right != NULL) && (temp->right->left == NULL))
+				{
+					temp->right = temp->right->right;
+					temp1 = temp->right;
+					delete temp1;
+					return;
+				}
+
+				if (temp->right->data == data && (temp->right->right != NULL) && (temp->right->left != NULL))
+				{
+					min_right(temp->right->right);
+					temp->right->data = d;
+					return;
+
+				}
+				else
+				{
+					return del(temp->right, data);
+				}
+
+
+			}
+		}
+	
+			cout<<"element deleted is:"<<temp->data<<endl;
+	}
+
+	void min_right(node *temp)
+	{
+		if (temp->left == NULL)
+		{
+
+			d = temp->data;
+			del(root, temp->data);
+			return;
+		}
+		else
+		{
+			min_right(temp->left);
+		}
+	}
+
+	void min_left(node *temp)
+	{
+		if (temp->right == NULL)
+		{
+
+			d = temp->data;
+			del(root, temp->data);
+			return;
+		}
+		else
+		{
+			min_left(temp->right);
+		}
+	}
+
+int height(node *temp)
+	{
+		if (temp == NULL)
+		{
+			return -1;
+		}
+		else
+		{
+
+			int LD = height(temp->left);
+			int RD = height(temp->right);
+
+			if (LD>RD)
+			{
+				return (LD + 1);
+			}
+
+			else
+			{
+				return (RD + 1);
+			}
+		}
+
+	}
+
+	node* check(node *temp)
+	{
+		if (temp == NULL)
+		{
+			return temp;
+		}
+		else
+		{
+			check(temp->left);
+			int h = height(temp->left);
+			h = h + 1;
+			int h2 = height(temp->right);
+			h2 = h2 + 1;
+			h = h - h2;
+			if (h>1 || h<-1)
+			{
+
+
+				temp = LL(temp);
+				return temp;
+
+			}
+
+			else
+			{
+				return temp;
+			}
+
+
+
+		}
+
+	}
+
+	node* LL(node *t)
+	{
+
+		
+		if (t->left->right!=NULL)
+		{
+			
+			n = new node;
+			n->left = NULL;
+			n->right = NULL;
+			n->data = t->data;
+			int b = t->left->right->data;
+			temp1 = t->left->right;
+			t->left->right = NULL;
+			delete temp1;
+			
+			int a = t->right->data;
+			t->data = t->left->data;
+
+			t->left->data = t->left->left->data;
+			t->left->left->data = t->left->left->left->data;
+			temp1 = t->left->left->left;
+			t->left->left->left = NULL;
+			delete temp1;
+			
+			t->right->data = n->data;
+			n = new node;
+			n->right = n->left = NULL;
+			n->data = a;
+			t->right->right = n;
+			n = new node;
+			n->left = n->right = NULL;
+			n->data = b;
+			t->right->left = n;
+			
+			return t;
+
+		}
+
+		else{
+			n = new node;
+			n->left = NULL;
+			n->right = NULL;
+			n->data = t->data;
+			t->data = t->left->data;
+			t->left->data = t->left->left->data;
+			temp1 = t->left->left;
+			t->left->left = NULL;
+			t->right = n;
+			return t;
+			delete temp1;
+		}
+
+	}
+	void inorder(node *temp)
+	{
+		if (temp == NULL)
+		{
+			return;
+		}
+		else
+		{
+			inorder(temp->left);
+			cout << temp->data << " ";
+			inorder(temp->right);
+		}
+	}
+
+
+
+
+};
+
+
+int  main()
+{
+	imp bst;
+	node *r = NULL;
+
+
+
+	r = bst.insert(r, 13);
+	r = bst.check(r);
+	bst.insert(r, 11);
+	r = bst.check(r);
+	bst.insert(r, 15);
+	r = bst.check(r);
+	bst.insert(r, 9);
+	r = bst.check(r);
+	bst.insert(r,7);
+	r = bst.check(r);
+	bst.insert(r, 5);
+	r = bst.check(r);
+	cout<<"Avl Tree before deletion:";
+	bst.inorder(r);
+	cout<<endl;
+	bst.del(r,15);
+	bst.del(r,7);
+	cout<<"Avl Tree after deletion:";
+	bst.inorder(r);
+
+
+return 0;
+
+
+
+}

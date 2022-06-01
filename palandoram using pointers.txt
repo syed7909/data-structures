@@ -1,0 +1,34 @@
+#include<iostream>
+using namespace std;
+
+int main()
+{
+	char arr[3] = { 'D', 'D', 'D' };
+
+	char *ptr;
+	char *ptr1;
+	ptr = arr;
+	ptr1 = arr;
+	for (int i = 0; i < 2; i++)
+	{
+		ptr++;
+	}
+	int counter = 0;
+	for (int i = 0; i < 2; i++)
+	{
+		if (*ptr1 != *ptr)
+		{
+			counter++;
+		}
+		ptr--;
+		ptr1++;
+	}
+	if (counter>0)
+	{
+		cout << "It is not palandoram" << endl;
+	}
+	else
+	{
+		cout << "It is palandoram" << endl;
+	}
+}

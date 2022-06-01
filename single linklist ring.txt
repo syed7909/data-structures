@@ -1,0 +1,117 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+
+	int data;
+	node *next;
+
+};
+
+class ring
+
+{
+	node *temp, *head, *n;
+
+public:
+
+	ring()
+	{
+		temp = head = n = NULL;
+	}
+	void add()
+	{
+		temp = head;
+		if (head == NULL)
+		{
+			head = new node;
+			cin >> head->data;
+			temp = head;
+			head->next = head;
+		}
+		else
+		{
+			while (temp->next != head)
+			{
+				temp = temp->next;
+
+			}
+			if (temp->next == head)
+			{
+				n = new node;
+				cin >> n->data;
+				temp->next = n;
+				n->next = head;
+				temp = temp->next;
+			}
+			
+		}
+	}
+
+	void disp()
+	{
+
+		temp = head;
+		while (temp->next != head)
+		{
+			cout << temp->data << " ";
+			temp = temp->next;
+
+		}
+		cout << temp->data;
+		cout << endl;
+
+	}
+
+
+	void del()
+	{
+		int key;
+		cout << "Enter the deletion key: ";
+		cin >> key;
+		temp = head;
+		n = temp->next;
+		while (temp->next != head)
+		{
+
+			if (head->data == key)
+			{
+				while (temp->next != head)
+				{
+					temp = temp->next;
+				}
+
+				head = head->next;
+				temp->next = head;
+				temp = head;
+
+
+			}
+			if (n->data == key)
+			{
+				temp->next = n->next;
+				break;
+			}
+			temp = temp->next;
+			n = n->next;
+
+		}
+
+	}
+};
+
+void main()
+{
+
+	ring r;
+	r.add();
+	r.add();
+	r.add();
+	r.add();
+	r.add();
+	r.del();
+	r.del();
+	r.disp();
+
+}

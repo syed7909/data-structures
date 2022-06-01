@@ -1,0 +1,99 @@
+#include<iostream>
+using namespace std;
+
+class hashing
+{
+public:
+	int Data;
+	int max;
+	int *ptr;
+	int length;
+
+
+	hashing(int size)
+	{
+		ptr = new int[size];
+		max = size;
+		length = 0;
+
+		for (int i = 0; i < max; i++)
+		{
+			ptr[i] = -1;
+		}
+	}
+	void display()
+	{
+		for (int i = 0; i < max; i++)
+		{
+			cout << ptr[i] << " ";
+
+		}
+		cout << endl;
+	}
+
+	void Linearprobing(int dataindex)
+	{
+		if (length == max)
+		{
+			cout << "Hash Tabel is full" << endl;
+		}
+		else
+		{
+			
+			dataindex = dataindex%max;
+			int storeindex = dataindex;
+			while (ptr[dataindex] != -1)
+			{
+				dataindex++;
+				if (dataindex == max)
+				{
+					break;
+				}
+			}
+
+
+			if (ptr[dataindex] == -1)
+			{
+				ptr[dataindex] = Data;
+				length++;
+				return;
+			}
+			if (length != max&&dataindex == 25)
+			{
+				dataindex = 0;
+				while (dataindex != storeindex)
+				{
+					if (ptr[dataindex] == -1)
+					{
+						ptr[dataindex] = Data;
+						length++;
+					}
+					else
+					{
+						dataindex++;
+					}
+				}
+
+				
+			}
+		}
+	}
+
+};
+
+void main()
+{
+	hashing hash(25);
+
+	for (int i = 0; i < 5; i++)
+	{
+		cout << "Enter the data: ";
+		cin >> hash.Data;
+		if (hash.Data != -1)
+		{
+			hash.Linearprobing(hash.Data);
+		}
+		
+	}
+	hash.display();
+}

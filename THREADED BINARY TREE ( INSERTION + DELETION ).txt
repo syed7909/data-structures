@@ -1,0 +1,335 @@
+#include<iostream>
+using namespace std;
+struct node
+{
+	int data;
+	node *left;
+	node *right;
+	bool LTH;
+	bool RTH;
+};
+
+class imp
+{
+	node *dummy;
+	node *root;
+	node *n;
+	node *temp1;
+
+	int d = 0;
+public:
+	imp()
+	{
+		dummy = new node;
+		dummy->LTH = false;
+		dummy->RTH = false;
+
+		dummy->right = dummy;
+		dummy->data = 6553;   // To check whether it is dummy or other node value
+
+		root = NULL;
+	}
+
+	node* dummyaddress()    //   Function returns the dummy address
+	{
+		return dummy;
+	}
+
+	node* insert(node *temp, int data)
+	{
+
+		if (root == NULL)
+		{
+
+
+			root = new node;
+			root->LTH = true;
+			root->RTH = true;
+
+			root->data = data;
+			root->left = dummy;
+			root->right = dummy;
+
+			temp = root;
+			dummy->left = root;
+
+
+			return root;
+
+		}
+
+
+
+		if (temp->data > data)
+		{
+			if (temp->LTH)
+			{
+
+				n = new node;
+				n->LTH = true;
+				n->RTH = true;
+
+				n->data = data;
+				n->left = temp->left;
+				n->right = temp;
+
+
+				temp->LTH = false;
+				temp->left = n;
+				temp = temp->left;
+
+
+				return temp;
+			}
+
+			else
+			{
+				insert(temp->left, data);
+			}
+
+		}
+
+
+		if (temp->data < data)
+		{
+			if (temp->RTH)
+			{
+
+				n = new node;
+				n->LTH = true;
+				n->RTH = true;
+
+				n->data = data;
+				n->right = temp->right;
+				n->left = temp;
+
+				temp->RTH = false;
+				temp->right = n;
+				temp = temp->right;
+
+
+				return temp;
+
+			}
+
+			else
+			{
+				insert(temp->right, data);
+			}
+
+		}
+	}
+
+
+
+
+	node* nextInorde(node* p)   // Function to get the next Inorder value of tree
+	{
+		if (p->RTH)
+			return(p->right);
+		else
+		{
+			p = p->right;
+			while (!p->LTH)
+				p = p->left;
+			return p;
+		}
+	}
+
+	void fastInorder(node* p)  // Function to traverse the tree in Inordered manner
+	{
+
+		while ((p = nextInorde(p)) != dummy)
+			cout << p->data << " ";
+
+
+	}
+
+
+	void del(node *temp, int data)
+	{
+
+		if (root->data == data)
+		{
+			return;
+		}
+		if (temp->data > data)
+		{
+
+			if (temp->LTH == false)
+			{
+
+				if (temp->left->data == data && (temp->left->LTH == true) && (temp->left->RTH == true))
+				{
+					temp1 = temp->left;
+					temp->left = temp->left->left;
+					temp->LTH = true;
+					delete temp1;
+					return;
+				}
+				if (temp->left->data == data && (temp->left->RTH == true) && (temp->left->LTH == false))
+				{
+					temp1 = temp->left;
+					temp->left->left->right = temp->left->right;
+					temp->left = temp->left->left;
+					delete temp1;
+					return;
+				}
+				if (temp->left->data == data && (temp->left->RTH == false) && (temp->left->LTH == true))
+				{
+					temp->left->right->left = temp->left->left;
+					temp->left = temp->left->right;
+					temp1 = temp->left;
+					delete temp1;
+					return;
+				}
+
+				if (temp->left->data == data && (temp->left->LTH ==false) && (temp->left->RTH == false))
+				{
+					min_left(temp->left->left);
+					temp->left->data = d;
+					return;
+				}
+
+				else
+				{
+
+					return del(temp->left, data);
+				}
+			}
+		}
+
+		if (temp->data < data)
+		{
+
+			if (temp->RTH == false)
+			{
+
+				if (temp->right->data == data && (temp->right->LTH == true) && (temp->right->RTH == true))
+				{
+					temp1 = temp->right;
+					temp->right = temp->right->right;
+					temp->RTH = true;
+					delete temp1;
+					return;
+				}
+
+				if (temp->right->data == data && (temp->right->RTH == true) && (temp->right->LTH == false))
+				{
+					temp1 = temp->right;
+					temp->right->left->right = temp->right->right;
+					temp->right = temp->right->left;
+					delete temp1;
+					return;
+
+				}
+				if (temp->right->data == data && (temp->right->LTH == true) && (temp->right->RTH == false))
+				{
+					temp1 = temp->right;
+					temp->right->right->left = temp->right->left;
+					temp->right = temp->right->right;
+					delete temp1;
+					return;
+
+				}
+
+				if (temp->right->data == data && (temp->right->LTH ==false) && (temp->right->RTH==false))
+				{
+					min_right(temp->right->right);
+					temp->right->data = d;
+					return;
+
+				}
+				else
+				{
+					return del(temp->right, data);
+				}
+
+
+			}
+		}
+	}
+
+
+	void min_right(node *temp)
+	{
+		if (temp->LTH == true)
+		{
+
+			d = temp->data;
+			del(root, temp->data);
+			return;
+		}
+		else
+		{
+			min_right(temp->left);
+		}
+	}
+
+	void min_left(node *temp)
+	{
+		if (temp->RTH == true)
+		{
+
+			d = temp->data;
+			del(root, temp->data);
+			return;
+		}
+		else
+		{
+			min_left(temp->right);
+		}
+	}
+
+
+
+};
+
+
+void main()
+{
+
+
+	imp bst;
+	node *r = NULL;
+	node *start = NULL;
+	start = bst.dummyaddress(); // Get the address of Dummy
+
+
+	r = bst.insert(r, 50);     // r contain the root address
+
+	cout << "                                    THREADED BINARY TREE" << endl;
+	cout << "1-INSERTION" << endl;
+	cout << "2-DELETION" << endl;
+	cout << "3-DISPLAY THREADED BINARY TREE" << endl;
+
+		cout << "PRESS KEY: ";
+
+	while (1)
+	{
+		int key;
+		cin >> key;
+
+		if (key == 1)
+		{
+			cout << "ENTER THE INSERTION DATA: ";
+			int ins;
+			cin >> ins;
+			bst.insert(r, ins);
+		}
+		if (key == 2)
+		{
+			cout << "ENTER THE DELETION DATA: ";
+			int del;
+			cin >> del;
+			bst.del(r, del);
+		}
+		if (key == 3)
+		{
+			bst.fastInorder(start);
+		}
+
+	}
+
+
+}

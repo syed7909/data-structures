@@ -1,0 +1,35 @@
+void f()
+	{
+		int s;
+		cin >> s;
+		int count1=0;
+		int count2 = 0;
+		temp = head;
+		while (temp!=NULL)
+		{
+			
+			if (temp->data == s)
+			{
+				break;
+			}
+			count1++;
+			temp = temp->next;
+		}
+		while (temp->next != NULL)
+		{
+			temp = temp->next;
+		}
+		disp = temp;
+		while (disp->pre!=NULL)
+		{
+			if (disp->data == s)
+			{
+				break;
+			}
+			count2++;
+			disp = disp->pre;
+		}
+		cout << count1 << " " << count2 << endl;
+
+
+	}
